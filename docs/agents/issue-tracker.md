@@ -15,6 +15,11 @@ repository from `git remote -v`.
 **Pull requests as a request surface: no.** Requirements and defects begin as
 issues; pull requests deliver accepted work.
 
+An explicit maintainer instruction may be the source for a
+repository-governance documentation change. This narrow exception does not
+apply to product requirements or defects, and the resulting pull request must
+cite the instruction it implements.
+
 When a skill says “publish to the issue tracker,” create a GitHub issue. When a
 skill says “fetch the relevant ticket,” use `gh issue view <number> --comments`.
 
