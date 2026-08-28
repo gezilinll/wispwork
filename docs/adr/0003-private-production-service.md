@@ -149,6 +149,8 @@ Until this proposal is accepted, the current specification and plan remain
 authoritative. Acceptance must be one atomic documentation PR that changes this
 status to `accepted`, aligns every source of truth that currently places demo
 and live code together under `apps/server`, and splits the affected delivery
-steps before any server implementation begins. The private repository is then
-created when the first approved live-service ticket starts, not merely to hold
-an empty scaffold.
+steps before any server implementation begins. The private repository already
+exists and may receive governance-only initialization while this proposal is
+reviewed; its existence does not authorize a runtime scaffold. Runtime work may
+start only from the first approved live-service ticket after the acceptance and
+alignment PR is merged.
