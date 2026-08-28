@@ -52,6 +52,21 @@ The prototype uses deterministic fixtures by default. Live model calls are
 server-side, opt-in, rate-limited, and budgeted so that validation does not
 require unbounded AIGC spend.
 
+## Development baseline
+
+Use the Node.js and pnpm versions pinned by `.nvmrc` and `package.json`. The
+repository does not contain an application scaffold yet, but its documentation
+and governance checks are reproducible:
+
+```bash
+pnpm install --frozen-lockfile
+pnpm check
+```
+
+The same `quality` job runs for pull requests and pushes to `main`. Application
+commands will be added by the separately reviewed client-scaffold MR that
+needs them.
+
 ## License
 
 Wisp is **source-available**, not Open Source as defined by OSI.

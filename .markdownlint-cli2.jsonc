@@ -8,5 +8,8 @@
   "globs": [
     "**/*.md",
     ".agents/**/*.md"
+  ],
+  "ignores": [
+    "node_modules/**"
   ]
 }
