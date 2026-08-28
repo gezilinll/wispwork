@@ -7,6 +7,9 @@ Read `docs/superpowers/specs/2026-08-28-wisp-v0-design.md` before planning
 implementation, then follow the task boundaries in
 `docs/superpowers/plans/2026-08-28-wisp-v0.md`.
 
+For branch, review, and handoff rules that apply to every repository change,
+follow `docs/agents/development-workflow.md`.
+
 Apply `.agents/skills/occam/SKILL.md` before adding an abstraction, adapter,
 registry, protocol field, extension point, or dependency. Treat every World
 Kit and user asset as untrusted input; public extension formats are
