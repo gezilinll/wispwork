@@ -67,6 +67,20 @@ verification.
    type checking throughout, then the complete applicable check before review.
 5. Keep one to three focused commits. Do not mix unrelated cleanup into them.
 
+## Repository baseline
+
+`.nvmrc`, `package.json`, and `pnpm-lock.yaml` pin the development runtime and
+dependency graph. Install with `pnpm install --frozen-lockfile` and use
+`pnpm check` as the single full-check entry point. Extend that script when a
+reviewed feature introduces a new required check instead of creating a second
+competing entry point.
+
+The GitHub Actions job named `quality` runs the same install and check on pull
+requests and pushes to `main`. After its first successful run, repository
+settings should require pull requests, the `quality` check, and resolved review
+conversations while rejecting force-pushes and branch deletion. Actions use a
+read-only token unless a reviewed workflow proves that it needs more access.
+
 ## Self-review before submission
 
 Create the local branch commits, then review the exact candidate diff:

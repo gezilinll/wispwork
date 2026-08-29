@@ -33,5 +33,22 @@ because a pull request exists.
    untrusted input.
 4. Include tests and update the single source of truth for any durable decision.
 
-Repository setup and development commands will be added with the first
-implementation scaffold.
+## Security reports
+
+Do not place a suspected vulnerability, credential, private user content, or
+production log in a public issue or pull request. Follow the
+[security policy](.github/SECURITY.md). When private reporting is unavailable,
+only use the detail-free contact request described there.
+
+## Repository checks
+
+Use the exact Node.js and pnpm versions pinned by `.nvmrc` and `package.json`,
+then run:
+
+```bash
+pnpm install --frozen-lockfile
+pnpm check
+```
+
+Application commands will be added by the separately reviewed client-scaffold
+MR that needs them.

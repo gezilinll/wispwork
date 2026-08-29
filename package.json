@@ -1,0 +1,19 @@
+{
+  "name": "wispwork",
+  "version": "0.0.0",
+  "private": true,
+  "license": "SEE LICENSE IN LICENSE",
+  "packageManager": "pnpm@11.24.0",
+  "engines": {
+    "node": "24.20.0",
+    "pnpm": "11.24.0"
+  },
+  "scripts": {
+    "docs:check": "markdownlint-cli2",
+    "whitespace:check": "node scripts/check-whitespace.mjs",
+    "check": "pnpm docs:check && pnpm whitespace:check"
+  },
+  "devDependencies": {
+    "markdownlint-cli2": "0.23.2"
+  }
+}
