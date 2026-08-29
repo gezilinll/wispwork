@@ -1,6 +1,7 @@
 # Wisp v0 Design Specification
 
-**Status:** Accepted handoff specification
+**Status:** Accepted product specification; repository boundary aligned
+2026-08-29
 
 **Date:** 2026-08-28
 
@@ -124,8 +125,8 @@ v0 uses one explicit Creative Loop rather than a general workflow graph.
 | Wisp | Responsibility | Mechanism |
 | --- | --- | --- |
 | **Brief Wisp** | Validates required intent, audience, exact copy, and output shape. | Deterministic form/schema checks. |
-| **Art Director Wisp** | Converts the Brief and Style Profile into a stored `CreativeSpecV1`. | One structured-output text-model call in live mode; deterministic fixture in demo mode. |
-| **Maker Wisp** | Produces a text-free hero image or background from the Creative Spec. | One image-generation call in live mode; bundled fixture in demo mode. |
+| **Art Director Wisp** | Converts the Brief and Style Profile into a stored `CreativeSpecV1`. | Deterministic fixture for public self-testing; an approved live-generation slice may use the private Backend. |
+| **Maker Wisp** | Produces a text-free hero image or background from the Creative Spec. | Bundled fixture for public self-testing; an approved live-generation slice may use the private Backend. |
 | **Typesetter Wisp** | Builds editable text and image layers with exact user copy. | Deterministic poster template rules. |
 
 The user sees these as collaborators, while implementation remains a linear,
@@ -209,7 +210,9 @@ v0 allows changing slot content, not arbitrary world construction.
 - four first-party Wisps and one explicit opening Creative Loop;
 - structured Brief entry with optional free-text details;
 - one Poster Artifact and media-specific Workbench;
-- deterministic demo provider plus opt-in live text/image providers;
+- deterministic client fixtures for the complete public self-test path;
+- opt-in live text/image generation through the private application Backend,
+  only after that feature slice is separately approved;
 - local-first project, run, document, and blob persistence;
 - one poster display slot inside the Studio;
 - PNG export;
@@ -253,32 +256,29 @@ Canonical definitions live in [`CONTEXT.md`](../../../CONTEXT.md).
 
 ## 11. Architecture
 
-Use a small TypeScript modular monolith with one browser app, one minimal Node
-API, and one shared protocol package:
+Wisp spans two repositories with one deployable application Backend:
 
 ```text
-apps/web
-├── app composition and routes
-├── workspace aggregate and commands
-├── creative-session state machine
-├── studio world projection (Babylon.js)
-├── poster workbench (React + Konva)
-├── local persistence (Dexie/IndexedDB)
-└── validation telemetry
+wispwork (source-available)
+├── browser client and product UI
+├── Studio rendering and Poster Workbench
+├── local product state and persistence
+├── public World Kit and extension formats
+└── client-local fixtures, mocks, and test doubles
 
-apps/server
-├── normalized generation endpoints
-├── budget, rate-limit, idempotency, and redacted logs
-├── deterministic demo adapters
-└── one OpenAI text adapter + one GPT Image adapter
-
-packages/protocol
-├── World Kit schemas
-├── persisted document schemas
-└── browser/server request and response schemas
+wispwork-server (private)
+└── every approved deployable Backend capability
 ```
 
-This is one bounded product context, despite having three build packages.
+The private repository is the only place for deployable server-side application
+code. Public mocks prove client behavior; they are neither a demo Backend nor a
+promise that the complete hosted product can be self-hosted from `wispwork`.
+Code enters its final owning repository in the first implementation slice.
+
+A cross-repository schema becomes a public contract only when an approved
+feature has a real client or extension consumer. Its authoritative definition
+then lives in `wispwork`, while `wispwork-server` consumes a pinned immutable
+release. No protocol package or distribution mechanism is created in advance.
 
 ### Deep modules and seams
 
@@ -289,7 +289,6 @@ This is one bounded product context, despite having three build packages.
 | `StudioRuntime` | mount, project snapshot, pick, capture, dispose | Babylon engine/scene, world projection, resource cleanup | Product persistence, vendor state |
 | `CreativeSession` | start, resume, retry a typed step | Explicit state transitions and run record | Generic workflow graph, vendor SDK types |
 | `PosterWorkbench` | open document, apply command, export | Poster editing behavior and transient Konva projection | Universal artifact model, Studio scene |
-| `GenerationGateway` | direct and generate image | Remote credentials, model snapshots, retries, budgets, normalized errors | UI or Project orchestration |
 | `WorkspaceStorage` | load and save workspace/assets | Dexie schema, IndexedDB transactions, migrations, blob lifetime | Domain decisions, renderer objects |
 
 The browser's serializable Workspace is the source of truth. Babylon and Konva
@@ -299,15 +298,16 @@ there is no generic event bus.
 `StudioRuntime` is a concrete Babylon.js module, not a renderer-neutral
 interface. `WorkspaceStorage` is likewise one concrete Dexie deep module,
 tested against `fake-indexeddb` rather than hidden behind a speculative
-repository interface. `GenerationGateway` is the one true adapter seam because
-paid remote providers, secrets, normalized failures, and a deterministic demo
-implementation are current requirements.
+repository interface. The client/Backend seam and any provider-facing module
+are designed only when the approved live-generation slice supplies concrete
+consumers, failure semantics, and trust requirements.
 
 ## 12. Technical baseline
 
-Versions below are the implementation baseline verified on 2026-08-28. The
-first scaffold must pin exact versions in `pnpm-lock.yaml`; routine upgrades do
-not change the product specification.
+Versions below are candidate baselines for the public client, verified on
+2026-08-28. Each slice must recheck the libraries it actually introduces and
+pin exact versions in `pnpm-lock.yaml`; this table does not authorize an empty
+scaffold or select the private Backend stack.
 
 | Concern | Choice |
 | --- | --- |
@@ -317,9 +317,7 @@ not change the product specification.
 | World | Babylon.js 9.23.0, WebGL2 baseline |
 | Workbench | Konva 10.3.2, react-konva 19.2.5 |
 | Local persistence | Dexie 4.4.5 over IndexedDB |
-| API | Fastify 5.12.1, OpenAI SDK 7.8.0 |
 | Tests | Vitest 4.1.11, Playwright 1.62.1, Babylon NullEngine |
-| Live model snapshots | `gpt-5.6-luna`; `gpt-image-2-2026-04-21` |
 
 Node recommends production applications use an LTS release. Babylon.js
 supports WebGL and WebGPU side by side, but v0 content cannot depend on
@@ -332,30 +330,27 @@ Primary references:
 - [Babylon.js repository](https://github.com/BabylonJS/Babylon.js)
 - [Babylon.js WebGPU support](https://github.com/BabylonJS/Documentation/blob/master/content/setup/support/webGPU.md)
 - [Khronos glTF 2.0 specification](https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html)
-- [GPT Image 2 model](https://developers.openai.com/api/docs/models/gpt-image-2)
 
 ## 13. Model-cost and privacy controls
 
-Demo mode is the default and must exercise the complete UI with deterministic
-fixtures at zero API cost. Live mode is an explicit server configuration.
+The public self-test path must exercise the complete client experience with
+deterministic fixtures and zero provider cost. It must not require the private
+repository, an account, credentials, or a network service.
 
-Live mode requires:
+Any live-generation slice belongs in `wispwork-server` and requires a separate
+accepted design before implementation. That design must define at least:
 
-- API keys only on the server;
-- one text-model call and at most one image-model call per initial run;
-- an idempotency key per run step;
-- a configurable daily hard budget and per-session generation cap;
-- usage recorded once even after a retry;
-- bounded retry only for classified transient failures;
-- server-side rate limiting and maximum request sizes;
-- redacted logs with no Brief body, reference image, API key, or generated
-  image by default;
-- model snapshot IDs stored with the run;
-- an explicit user notice before sending Brief/reference data to a provider;
-- local deletion that removes Project metadata and stored blobs.
+- the data disclosed to a provider and the user notice before disclosure;
+- credential isolation from browser bundles and public fixtures;
+- bounded calls, cost limits, retry and duplicate-request semantics;
+- request validation, safe public errors, and an explicit logging allowlist;
+- ownership and deletion behavior for retained inputs, outputs, and usage;
+- deterministic client and Server test seams that spend no provider credit.
 
-Spark is debited only after a provider accepts a billable request. Failed,
-deduplicated, or demo requests do not consume it.
+The provider, model snapshot, API shape, persistence, rate-limit mechanism, and
+deployment topology remain deliberately unselected until that slice. Spark is
+debited only for a real accepted billable operation; fixtures, rejected work,
+and duplicates do not consume it.
 
 ## 14. Extension strategy
 
@@ -408,7 +403,7 @@ time spent watching Wisps, and willingness to customize the room are secondary.
   GPU/resource growth;
 - the reference scene works in current Chrome, Safari, and one Android
   mid-range device using the WebGL2 path;
-- a vendor outage still permits the full demo path with clearly labelled
+- a vendor outage still permits the full fixture path with clearly labelled
   fixtures;
 - no user content or model key appears in client bundles or default logs;
 - PNG export is deterministic at 1080 × 1350.
@@ -468,5 +463,7 @@ Not accepted yet:
 - Unity, PlayCanvas, or another renderer as a supported runtime;
 - a custom reciprocal license legally forcing upstream publication.
 
-Implementation follows
-[`docs/superpowers/plans/2026-08-28-wisp-v0.md`](../plans/2026-08-28-wisp-v0.md).
+Delivery follows the rolling plan in
+[`docs/superpowers/plans/2026-08-29-wisp-v0-rolling-delivery.md`](../plans/2026-08-29-wisp-v0-rolling-delivery.md).
+That plan authorizes no functional scaffold by itself: each feature slice first
+needs its own accepted specification and focused implementation plan.

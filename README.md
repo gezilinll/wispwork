@@ -14,9 +14,11 @@ repository name; `wisp.work` is the intended product address.
 
 ## Status
 
-**Pre-alpha / handoff complete, implementation not started.** The repository
-currently defines the product, domain language, architecture, public World Kit
-boundary, licensing, and an executable v0 plan. It is not yet a usable app.
+**Pre-alpha / implementation not started.** The repository defines the product,
+domain language, public World Kit boundary, rendering direction, licensing,
+and cross-repository ownership. The first functional slice still requires an
+accepted slice specification and implementation plan. It is not yet a usable
+app.
 
 The first proof is deliberately narrow:
 
@@ -31,10 +33,10 @@ The intended aha moment is not “an AI generated an image.” It is:
 > The same structured style changed both my workspace and a useful artifact,
 > and the artifact now has a persistent place in my world.
 
-## Read the handoff
+## Read the project baseline
 
 - [Product and v0 design](docs/superpowers/specs/2026-08-28-wisp-v0-design.md)
-- [Implementation plan](docs/superpowers/plans/2026-08-28-wisp-v0.md)
+- [Rolling delivery plan](docs/superpowers/plans/2026-08-29-wisp-v0-rolling-delivery.md)
 - [Canonical domain language](CONTEXT.md)
 - [World Kit protocol](docs/protocols/world-kit-v0.md)
 - [Rendering decision and technical design](docs/technical/rendering.md)
@@ -48,9 +50,11 @@ asset and render profiles inside that engine, not interchangeable engines.
 React/DOM owns product UI, a media-specific Workbench owns direct artifact
 editing, and strict versioned World Kits carry untrusted community content.
 
-The prototype uses deterministic fixtures by default. Live model calls are
-server-side, opt-in, rate-limited, and budgeted so that validation does not
-require unbounded AIGC spend.
+The source-available repository contains no deployable Backend. Its client
+uses deterministic fixtures, mocks, or test doubles where needed for complete
+local self-testing. Any approved hosted capability is implemented from the
+start in the private `wispwork-server` application Backend; the public
+repository does not promise full product self-hosting.
 
 ## Development baseline
 
@@ -63,9 +67,9 @@ pnpm install --frozen-lockfile
 pnpm check
 ```
 
-The same `quality` job runs for pull requests and pushes to `main`. Application
-commands will be added by the separately reviewed client-scaffold MR that
-needs them.
+The same `quality` job runs for pull requests and pushes to `main`. The first
+approved feature slice adds only the application commands it needs in its own
+reviewed MR.
 
 ## License
 

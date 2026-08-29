@@ -50,5 +50,5 @@ pnpm install --frozen-lockfile
 pnpm check
 ```
 
-Application commands will be added by the separately reviewed client-scaffold
-MR that needs them.
+The first approved feature slice adds only the application commands it needs in
+its own reviewed MR.

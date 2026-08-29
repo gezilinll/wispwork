@@ -3,9 +3,12 @@
 Read `CONTEXT.md` and relevant files in `docs/adr/` before changing product
 language, domain boundaries, architecture, or protocols.
 
-Read `docs/superpowers/specs/2026-08-28-wisp-v0-design.md` before planning
-implementation, then follow the task boundaries in
-`docs/superpowers/plans/2026-08-28-wisp-v0.md`.
+Read `docs/superpowers/specs/2026-08-28-wisp-v0-design.md` before changing
+product scope. Read
+`docs/superpowers/plans/2026-08-29-wisp-v0-rolling-delivery.md` before planning
+implementation. Start functional work only from an accepted slice
+specification and its focused implementation plan; when either is absent, the
+next action is the documented grill, not a scaffold.
 
 For branch, review, and handoff rules that apply to every repository change,
 follow `docs/agents/development-workflow.md`.
@@ -14,6 +17,12 @@ Apply `.agents/skills/occam/SKILL.md` before adding an abstraction, adapter,
 registry, protocol field, extension point, or dependency. Treat every World
 Kit and user asset as untrusted input; public extension formats are
 declarative and versioned.
+
+The private `wispwork-server` repository owns Wisp's only deployable
+application Backend. Keep this repository self-testable with client-local
+fixtures, mocks, or test doubles; do not add a server process or imply full
+product self-hosting. Add a public cross-repository contract only when an
+approved feature has a real consumer, then keep its authoritative schema here.
 
 Prefer a mature, maintained library for generic infrastructure. Before writing
 a replacement, record why available libraries fail the current contract on

@@ -31,7 +31,7 @@ move essential complexity across multiple callers.
 | Keep now | Evidence |
 | --- | --- |
 | Strict versioned World Kit data | Persisted, shared, untrusted content is a current compatibility and security boundary. |
-| Narrow ports for paid remote model calls | Production adapters need secrets, failure handling, budgets, and deterministic fakes. |
+| A narrow port after an approved slice introduces paid remote model calls | A current production adapter needs secrets, failure handling, budgets, and deterministic fakes. |
 | Schema migrations and stable IDs | User work must survive new releases and Remix provenance. |
 | Validation, accessibility, and measured budgets | These protect real users and devices; brevity is not the goal. |
 
