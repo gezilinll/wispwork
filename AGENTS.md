@@ -37,10 +37,11 @@ Wisp as source-available, not Open Source.
 
 ## Agent skills
 
-### Issue tracker
+### Decision sources and Issues
 
-Work is tracked in GitHub Issues for `gezilinll/wispwork`. See
-`docs/agents/issue-tracker.md`.
+Read `docs/agents/issue-tracker.md` when choosing a pull-request decision source
+or using GitHub Issues for feedback, defects, backlog, or ticket coordination.
+Accepted internal specifications and plans do not require duplicate Issues.
 
 ### Domain docs
 
