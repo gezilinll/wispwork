@@ -7,8 +7,9 @@ and handing off changes. On GitHub, an MR is a pull request (PR).
 
 - `main` is integration-only. Agents never commit or push directly to it and
   never force-push it.
-- Every PR has one approved decision source under
-  `docs/agents/issue-tracker.md` and maps that source to one branch.
+- Every PR has one approved decision source recognized by
+  `docs/agents/issue-tracker.md` and maps that source to one branch. An accepted
+  repository specification or focused plan is valid; an Issue is not mandatory.
 - The agent may create focused local commits on its branch so the complete
   `HEAD` diff can be reviewed. It must not merge, squash, rebase after review,
   or delete the branch unless the maintainer asks.
@@ -23,7 +24,7 @@ Use the focused Matt Pocock skills directly when their trigger applies:
 | --- | --- | --- |
 | A major or still-ambiguous capability | `/grill-with-docs`, then `/to-spec` | An agreed domain model, decisions, scope, and test seams |
 | Work spanning more than one fresh context | `/to-tickets` | Maintainer-approved tracer-bullet tickets with real blocking edges |
-| One approved ticket | `/implement`, with `/tdd` at agreed seams | One complete, demonstrable behavior on a branch |
+| One approved implementation task | `/implement`, with `/tdd` at agreed seams | One complete, demonstrable behavior on a branch |
 | A hard bug or performance regression | `/diagnosing-bugs` | A tight red-capable reproduction before hypotheses or fixes |
 | A question prose cannot settle cheaply | `/prototype` | Throwaway evidence on a non-main branch; only the decision reaches `main` |
 | Any change before PR submission | `/code-review` | Independent Standards and Spec findings against a fixed point |
@@ -32,10 +33,11 @@ Use the focused Matt Pocock skills directly when their trigger applies:
 skills remain available when their own trigger occurs. They do not belong in
 the routine path for a small ticket.
 
-## Shape a reviewable ticket
+## Shape a reviewable task
 
-Use `/to-tickets` for a multi-ticket feature and obtain maintainer approval of
-the granularity and blocking edges before implementation. Each ticket should:
+Use `/to-tickets` when a feature needs durable tracker coordination across
+multiple tickets or fresh contexts. Obtain maintainer approval of the
+granularity and blocking edges before implementation. Each task should:
 
 - deliver a narrow but complete path that is demonstrable or independently
   verifiable;
@@ -55,10 +57,11 @@ verification.
 
 ## Branch and implement
 
-1. Fetch `origin` and branch from the current `origin/main` using
-   `feat/<issue>-<slug>`, `fix/<issue>-<slug>`, or `docs/<issue>-<slug>`.
-   When the issue-tracker policy permits a governance change without an issue,
-   use `docs/<slug>`.
+1. Fetch `origin` and branch from the current `origin/main`. When an Issue is
+   the decision source, use `feat/<issue>-<slug>`, `fix/<issue>-<slug>`, or
+   `docs/<issue>-<slug>`. When a confirmed grill, accepted repository
+   specification, focused plan, or governance instruction is the source, use
+   `feat/<slug>`, `fix/<slug>`, or `docs/<slug>`.
 2. Restate the decision source's applicable acceptance criteria, public test
    seams, blockers, and explicit exclusions before editing.
 3. Use mature maintained libraries for generic infrastructure and apply the
@@ -112,7 +115,7 @@ after fixes and repeat the review when the candidate diff changed materially.
 
 For implementation changes, the minimum final verification is the focused
 tests plus `pnpm check`; add E2E, renderer, security, or deployment checks when
-the ticket touches those boundaries. For pre-scaffold documentation changes,
+the task touches those boundaries. For pre-scaffold documentation changes,
 run the repository's available Markdown and link checks plus
 `git diff --check`.
 
@@ -120,7 +123,7 @@ run the repository's available Markdown and link checks plus
 
 Push only the feature branch and open a PR. Its description must include:
 
-- the ticket or decision source and user-visible outcome;
+- the decision source and user-visible outcome;
 - what is deliberately out of scope;
 - how to demonstrate the result;
 - tests and commands actually run, with their results;
@@ -129,5 +132,5 @@ Push only the feature branch and open a PR. Its description must include:
   relevant.
 
 Do not merge the PR. After the maintainer merges it, fetch the new
-`origin/main`, confirm the merge, and start the next approved ticket from a new
+`origin/main`, confirm the merge, and start the next approved task from a new
 branch.

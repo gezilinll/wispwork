@@ -26,6 +26,9 @@ is selected by the first approved Server-owned slice, not by this plan.
 **Spec:**
 [`docs/superpowers/specs/2026-08-28-wisp-v0-design.md`](../specs/2026-08-28-wisp-v0-design.md)
 
+**Accepted first slice:**
+[`docs/superpowers/specs/2026-08-29-style-echo-slice.md`](../specs/2026-08-29-style-echo-slice.md)
+
 ## Global constraints
 
 - Read `AGENTS.md`, `CONTEXT.md`, accepted ADRs, and the relevant protocol or
@@ -94,6 +97,8 @@ deployment choices remain feature-gated.
 
 ### Task 3: Grill the first functional slice
 
+**Status:** Accepted as Style Echo; implementation not started.
+
 **Owner:** Product decision in `wispwork`; cross-repository facts may inspect
 both repositories.
 
@@ -106,6 +111,9 @@ symmetry is not a reason to invent it.
 **Completion gate:** The maintainer confirms shared understanding. The slice
 has a named specification in `docs/superpowers/specs/`, and every unresolved
 choice that could materially change implementation remains outside the slice.
+
+**Accepted specification:**
+[`2026-08-29-style-echo-slice.md`](../specs/2026-08-29-style-echo-slice.md)
 
 ### Task 4: Plan only the accepted slice
 

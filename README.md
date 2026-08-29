@@ -16,11 +16,12 @@ repository name; `wisp.work` is the intended product address.
 
 **Pre-alpha / implementation not started.** The repository defines the product,
 domain language, public World Kit boundary, rendering direction, licensing,
-and cross-repository ownership. The first functional slice still requires an
-accepted slice specification and implementation plan. It is not yet a usable
-app.
+and cross-repository ownership. The first functional slice,
+[Style Echo](docs/superpowers/specs/2026-08-29-style-echo-slice.md), has an
+accepted specification but still requires a focused implementation plan. It is
+not yet a usable app.
 
-The first proof is deliberately narrow:
+The v0 validation path is deliberately narrow:
 
 1. open a personal Studio and choose a visual profile;
 2. describe one real social-poster task through a structured Brief;
@@ -36,6 +37,7 @@ The intended aha moment is not “an AI generated an image.” It is:
 ## Read the project baseline
 
 - [Product and v0 design](docs/superpowers/specs/2026-08-28-wisp-v0-design.md)
+- [Accepted Style Echo slice](docs/superpowers/specs/2026-08-29-style-echo-slice.md)
 - [Rolling delivery plan](docs/superpowers/plans/2026-08-29-wisp-v0-rolling-delivery.md)
 - [Canonical domain language](CONTEXT.md)
 - [World Kit protocol](docs/protocols/world-kit-v0.md)
