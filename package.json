@@ -2,6 +2,7 @@
   "name": "wispwork",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "license": "SEE LICENSE IN LICENSE",
   "packageManager": "pnpm@11.24.0",
   "engines": {
@@ -9,11 +10,30 @@
     "pnpm": "11.24.0"
   },
   "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "typecheck": "tsc --noEmit",
+    "test:unit": "vitest run",
+    "test:e2e": "playwright test",
     "docs:check": "markdownlint-cli2",
     "whitespace:check": "node scripts/check-whitespace.mjs",
-    "check": "pnpm docs:check && pnpm whitespace:check"
+    "assets:verify": "node scripts/verify-assets.mjs",
+    "check": "pnpm docs:check && pnpm whitespace:check && pnpm assets:verify && pnpm typecheck && pnpm test:unit && pnpm build && pnpm test:e2e"
   },
   "devDependencies": {
-    "markdownlint-cli2": "0.23.2"
+    "@playwright/test": "1.62.1",
+    "@types/react": "19.2.8",
+    "@types/react-dom": "19.2.5",
+    "@vitejs/plugin-react": "6.1.1",
+    "markdownlint-cli2": "0.23.2",
+    "typescript": "7.0.2",
+    "vite": "8.2.2",
+    "vitest": "4.1.11"
+  },
+  "dependencies": {
+    "@babylonjs/core": "9.23.0",
+    "@babylonjs/loaders": "9.23.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
   }
 }
