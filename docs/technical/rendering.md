@@ -74,6 +74,7 @@ class StudioRuntime {
   constructor(options: StudioRuntimeOptions);
   mount(canvas: HTMLCanvasElement | null, kit: StudioKitProjection): Promise<void>;
   project(snapshot: StudioProjection): void;
+  returnToOverview(): void;
   replaceDisplayAsset(asset: StudioDisplayAsset | null): Promise<void>;
   readOwnedResourceCounts(): StudioResourceCounts;
   dispose(): Promise<void>;
@@ -83,9 +84,11 @@ class StudioRuntime {
 `StudioKitProjection` and `StudioProjection` are concrete serializable inputs;
 the transient `StudioDisplayAsset` contains a stable ID and Blob, never a
 persisted value or Poster DOM node. Production omits `testEngine`; tests inject
-Babylon `NullEngine` and pass a null canvas. `setView`, Studio capture, and hit
-callbacks are added only when a real navigation, capture, or picking consumer
-earns them; they are not speculative methods in the first slice.
+Babylon `NullEngine` and pass a null canvas. `returnToOverview` is the bounded
+Opening Studio consumer for restoring the World Kit's pinned home camera after
+orbit or zoom. General `setView`, Studio capture, and hit callbacks are added
+only when a real navigation, capture, or picking consumer earns them; they are
+not speculative methods in the first slice.
 
 It owns:
 
@@ -218,8 +221,10 @@ a smoke test; deterministic CI does not assert browser GC or memory counters.
   rendering, and nonessential animation.
 - If 3D cannot initialize, the product presents a clear diagnostic and retains
   access to the Brief and Workbench; it does not silently lose user work.
-- Mobile v0 is a viewing/compatibility target, not a promise of full poster
-  authoring ergonomics.
+- Opening Studio supports a viewport of at least 1280 × 720 CSS pixels with a
+  fine primary pointer. A smaller viewport or coarse pointer receives the
+  localized desktop-only DOM notice before Babylon initializes. Mobile and
+  tablet support require a separately accepted compatibility slice.
 
 ## Reference-scene budgets
 
@@ -228,15 +233,15 @@ World Kit importer ceilings are defined in
 adds experience budgets:
 
 - first useful frame and first interactive time recorded separately;
-- ordinary Studio navigation targets a steady 30 FPS on the selected Android
-  mid-range device and 60 FPS on the demo laptop;
+- ordinary Studio navigation targets a steady 60 FPS on the demo laptop;
 - pointer-to-highlight response targets under 100 ms on the demo laptop;
 - one generated 1024–1536 px image can replace a display texture without a
   long main-thread task over 100 ms;
 - continuous resource growth after 20 kit reloads is a release blocker.
 
 These are acceptance targets, not claims that Babylon.js universally achieves
-them.
+them. Android FPS is not evaluated by the current slice because mobile support
+is outside its accepted product boundary.
 
 ## Babylon/PlayCanvas Spike
 

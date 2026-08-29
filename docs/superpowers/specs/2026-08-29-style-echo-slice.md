@@ -1,7 +1,8 @@
 # Style Echo first functional slice
 
-**Status:** Accepted after maintainer `grill-with-docs` confirmation;
-implementation not started
+**Status:** Accepted after maintainer `grill-with-docs` confirmation; Opening
+Studio asset-first amendment and Blender source-license correction accepted by
+the maintainer on 2026-08-30
 
 **Date:** 2026-08-29
 
@@ -11,8 +12,12 @@ implementation not started
 **Visual specification:**
 [`2026-08-29-wisp-visual-constitution.md`](2026-08-29-wisp-visual-constitution.md)
 
-**Delivery gate:** This specification authorizes a focused implementation plan,
-not application code or an empty scaffold.
+**Opening Studio asset evidence:**
+[`2026-08-30-opening-studio-runtime-assets.md`](../../research/2026-08-30-opening-studio-runtime-assets.md)
+
+**Delivery gate:** The accepted specification authorized the focused plan. The
+2026-08-30 amendment authorizes a revised focused plan, not further corrective
+implementation, until the maintainer accepts that written revision.
 
 ## 1. Decision
 
@@ -52,6 +57,38 @@ delivery-agent experience review.
 
 ## 3. User-visible interaction
 
+### 3.0 Supported surface and product language
+
+This slice is a desktop-browser experience. The supported boundary is a
+viewport of at least **1280 × 720 CSS pixels** and a fine primary pointer. If
+either condition is absent, the application renders its localized product
+shell and desktop-only notice but does not initialize Babylon. Mobile and
+tablet authoring layouts are outside the current product promise.
+
+The product supports separate English and Simplified Chinese locales. On the
+first visit it follows the browser language; an explicit language switch is
+remembered across reloads. Locale preference is validated and persisted
+separately from preview and adopted Studio state, so changing language never
+changes creative work.
+
+Opening Studio uses this exact localized copy:
+
+| State | Simplified Chinese | English |
+| --- | --- | --- |
+| Product identity | 灵思 · 创意宇宙 | Wisp · Creative Universe |
+| Title | 你的创意事务所 | Your Creative Studio |
+| Kit | 世界套件：暖光工坊 | World Kit: Warm Atelier |
+| Loading | 正在打开创意宇宙… | Opening your creative universe… |
+| Ready | 暖光工坊已就绪 | Warm Atelier is ready |
+| Reset | 回到全景 | Return to overview |
+| 3D fault | 3D 创意事务所暂时无法打开 | The 3D Creative Studio couldn’t open |
+| Retry | 重新尝试 | Try again |
+| Unsupported device | 当前版本仅支持桌面端 | This version is available on desktop only |
+
+English remains the canonical language for code, protocol names, and stable
+persisted identifiers. The Chinese terms above are product localization, not
+aliases that change domain identity.
+
 ### 3.1 First frame
 
 The first visit opens directly into a real Babylon Studio. It does not begin on
@@ -66,6 +103,143 @@ Studio on a visible floating Universe fragment, a controlled weak-perspective
 three-quarter home view, a legible central creative surface and display area,
 and meaningful anomaly accents. The approximately 65/35 tangible/anomaly
 balance is a human composition principle, not an automated coverage quota.
+
+The first frame is world-dominant rather than a fixed world/panel split. A
+compact DOM card floats at the upper right and holds authoritative identity,
+status, language, reset, retry, and later task controls. The user may apply
+bounded orbit and zoom, then invoke the explicit localized overview action to
+restore the stable home composition; panning and free navigation remain
+disabled.
+
+The DOM shell appears immediately. The 3D Studio uses only a restrained
+300–500 ms reveal after it becomes ready; reduced-motion preference removes
+that reveal without delaying meaning. There is no cinematic portal sequence.
+
+#### 3.1.1 Asset-first Warm Atelier realization amendment
+
+The first runnable Opening Studio candidate established the renderer,
+lifecycle, camera, localization, and supported-device boundary, but its
+procedural boxes, tubes, and generated flat textures did not meet Visual
+Constitution criterion 3. They still read as a toy-like scene. That criterion
+remains blocking; it is not relaxed to preserve already-written code.
+
+Opening Studio therefore owns the smallest runtime-asset path that can correct
+the three focal zones before later Style Echo behavior begins:
+
+1. One checked-in `opening-studio.blend` is the editable first-party source,
+   authored with
+   [Blender 4.5.13 LTS](https://www.blender.org/releases/4-5/). It exports two
+   first-party runtime files. `opening-studio-shell.glb` contains the curved
+   timber silhouette, intentional bevels and joinery, wall infill, floor edge,
+   and fixed workbench augmentation. `opening-studio-display.glb` contains a
+   substantial display plinth, brass frame, and empty glass canopy. The
+   `.blend` source and generated GLBs retain the repository's default PolyForm
+   Noncommercial license for their first-party authored content; any embedded
+   Poly Haven image data remains CC0. A small checked-in `bpy` export helper
+   contains only collection selection and deterministic glTF-export settings;
+   because it calls Blender's Python API, that file alone is explicitly
+   licensed GPL-3.0-or-later and accompanied by the corresponding license
+   text. It contains no mesh coordinates, dimensions, art direction, or
+   modeling logic. Blender itself and temporary authoring output are not
+   project or CI dependencies. Source metadata records the exact Blender
+   version and the official distribution hash used for export; CI verifies
+   committed source and outputs rather than downloading Blender.
+2. The Studio bundles only the screened Poly Haven CC0 inputs recorded in the
+   asset evidence: `WoodenTable_01_1k.glb` as the workbench base,
+   `painted_wooden_cabinet_1k.glb` as archive storage, and the six 1K JPEGs from
+   Fine Grained Wood and Plastered Wall 03 for the authored structure. The
+   table sits beneath the first-party workbench root and may not remain a
+   coffee-table-scale stock prop; the cabinet may not impersonate the Artifact
+   display. Their measured converted runtime set is 4,558,354 bytes before the
+   two first-party GLBs.
+3. The asset manifest records source URLs, acquisition date, page/API
+   identities, source and final SHA-256 values, conversion command and tool
+   version, license, sizes, and first-party Blender source/export metadata. The
+   repository commits only final runtime files and notices, not source archives,
+   previews, full packs, or unused formats. Runtime loading is local-only and
+   performs no Poly Haven or other external request.
+
+The converted third-party GLBs preserve source geometry, textures, and
+materials for provenance. Composition, scale, shared PBR material treatment,
+authored augmentation, lighting, and semantic placement make them part of Warm
+Atelier rather than an untouched stock pack. If either furniture model still
+fights the selected silhouette after one real-browser composition pass, remove
+it and author that fixture in the same two first-party GLBs. Kenney, KayKit,
+Quaternius, or another low-poly pack is not a fallback for a failed focal form.
+
+`StudioRuntime` remains the concrete deep Babylon module that owns engine,
+scene, camera, render loop, projection, fault, retry, and disposal. One
+internal Opening Studio scene module directly imports
+`@babylonjs/loaders/glTF` from exact package version `9.23.0`, loads and
+assembles the bundled GLBs and PBR textures, and parents them under stable
+internal roots named `studio-shell`, `studio-workbench`, `studio-archive`, and
+`studio-artifact-display`. It exposes only the owned references that
+`StudioRuntime` needs for style projection and disposal. There is no generic
+asset manager, registry, renderer adapter, World Kit importer, or public asset
+protocol.
+
+Every required asset load is part of the existing asynchronous mount. A
+partial or failed load disposes every created container and enters the existing
+localized 3D fault state; retry creates a fresh mount. The unsupported-device
+gate runs before asset loading and therefore fetches neither GLB nor texture.
+The product does not substitute a screenshot or the rejected procedural scene
+while claiming that 3D succeeded.
+
+The asset-first amendment has these hard budgets and gates:
+
+- the two first-party GLBs total at most 2,000,000 bytes;
+- all new committed Opening Studio runtime assets total at most 7,000,000
+  bytes;
+- the complete mounted home scene contains at most 50,000 triangles;
+- the current three-light setup and one 512-pixel shadow map remain the first
+  lighting pass; no HDRI, Draco, Meshopt, KTX2, or decoder is added unless a
+  measured failure earns it;
+- asset verification is part of the terminating repository check and rejects
+  a hash, size, source, license, Blender source/export, or inventory mismatch;
+- all four bundled GLBs load in `NullEngine` and real WebGL2 with stable
+  semantic roots, no required compression extension, and no retained owned
+  resources after twenty mount/dispose cycles;
+- the supported 1280 × 720 home view sustains the existing 60 FPS target on
+  the demo laptop, and first useful DOM plus first interactive Studio marks
+  remain separately reported;
+- final human review must again pass all Visual Constitution items 1–4. In the
+  focal order, the workbench reads first, the shell second, and the Artifact
+  display before the dormant anomaly. Loading successfully or staying within
+  budgets cannot override a toy-like or untouched-stock visual result.
+
+This amendment deliberately moves the matching Babylon GLB loader, bundled
+runtime assets, third-party manifest, and asset verifier from Live Style Echo
+Task 3 into Opening Studio Task 1. Task 3 consumes that established scene and
+retains its actual outcome: Warm/Neon projection and Typesetter Wisp behavior.
+It no longer vendors the previously proposed Kenney furniture. The amendment
+does not move Neon, Wisp, Poster, Workbench, adoption, persistence, generation,
+Backend, World Kit import, or community behavior into Task 1.
+
+Occam decision record:
+
+**Need:** Correct a measured visual failure in the three focal Studio zones
+without weakening the accepted visual target.
+
+**Evidence:** The current procedural scene passes the functional renderer path
+but fails the mature-handcrafted human review, while the screened CC0 set does
+not contain a suitable shell or glass display.
+
+**Cheapest correct choice:** One noncommercial editable Blender source, two
+noncommercial first-party GLB exports, one minimal GPL export helper, two
+screened CC0 furniture inputs, two shared CC0 PBR material sets, and one
+concrete scene module inside the existing Babylon runtime.
+
+**Deliberately deferred:** Generic asset management, public formats, community
+imports, compression pipelines, HDRI, additional renderers, style behavior,
+and asset volume beyond the first-frame focal forms.
+
+**Revisit when:** A second real bundled or imported scene needs shared loading
+policy, the measured payload or GPU cost breaks the supported baseline, or PBR
+reflection remains visibly flat after geometry and material correction.
+
+**Verification:** Stable asset inventory and hashes, browser plus NullEngine
+loading, twenty clean lifecycles, explicit byte/triangle/performance evidence,
+and a fresh maintainer/agent visual judgment against the same north star.
 
 A DOM panel exposes three structured fields:
 
@@ -244,7 +418,13 @@ The focused implementation plan must include tests that prove at least:
 9. keyboard-only operation reaches the fields, both profiles, adoption, and
    export, while status remains understandable without Wisp motion;
 10. a WebGL2 initialization failure produces a clear diagnostic and preserves
-    access to the structured Poster path and accepted local data.
+    access to the structured Poster path and accepted local data; its retry
+    action can attempt a fresh mount without reloading or losing DOM state;
+11. a viewport below 1280 × 720 or without a fine primary pointer does not
+    initialize Babylon and instead exposes the localized desktop-only notice;
+12. the initial locale follows the browser, a manual English/Chinese switch
+    survives reload independently, and neither locale change mutates preview
+    or adopted Studio state.
 
 The implementation plan selects the smallest mature libraries that satisfy
 these behaviors. Candidate versions in the parent specification are not an
@@ -258,7 +438,7 @@ The slice is complete only when:
 
 - every focused and repository-wide deterministic check passes;
 - the full user-visible path is demonstrated in the supported desktop browser
-  baseline and inspected at the mobile viewing compatibility size;
+  baseline, including its 1280 × 720 lower bound and unsupported-device gate;
 - Warm Atelier and Neon Pixel Lab are clearly distinct while remaining
   coherent across Studio, UI, Wisp, and Poster;
 - the Studio reads as a mature handcrafted creative space on a private
@@ -298,10 +478,14 @@ evidence and does not enter this slice merely because Babylon is used here.
 
 ## 11. Next delivery gate
 
-After this specification is merged, write one focused implementation plan for
-Style Echo. That plan must name exact files, dependency evidence, failing tests,
-commands, review-sized tasks, and one user-visible outcome per MR.
+The original specification and focused plan passed this gate before Opening
+Studio implementation began. After the maintainer accepts the 2026-08-30
+asset-first amendment, revise that same focused implementation plan rather than
+creating a competing plan. The revision must name exact files, dependency and
+asset evidence, failing tests, commands, review-sized tasks, and one
+user-visible outcome per MR.
 
-Implementation begins only after the maintainer accepts that plan. Each task is
-then delivered in one MR, self-reviewed against a fixed `origin/main`, and
-stopped for manual maintainer merge before the next task starts.
+Corrective implementation resumes only after the maintainer accepts the revised
+plan. Each task is then delivered in one MR, self-reviewed against a fixed
+`origin/main`, and stopped for manual maintainer merge before the next task
+starts.
