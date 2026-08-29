@@ -85,7 +85,7 @@ system quest from a fictional client.
 
 | Time | User action | System response | Validation purpose |
 | --- | --- | --- | --- |
-| 0:00–1:00 | Name the Studio and choose one of two Style Profiles. | The same base room changes materials, lighting, camera treatment, UI accent, and Wisp appearance. | Prove the Studio is personal before asking for work. |
+| 0:00–1:00 | Name the Studio and choose one of two Style Profiles. | The same base room changes material tint, bounded light color/intensity, UI accent, and Wisp appearance while its camera remains stable. | Prove the Studio is personal before asking for work. |
 | 1:00–3:00 | Fill a structured Brief: audience, format, exact headline, supporting text, intent, style chips, and optional notes/reference. | The Brief Wisp marks missing constraints and presents a compact contract. | Remove prompt-writing as the entry barrier. |
 | 3:00–5:30 | Confirm the Wisp team and spend one Spark in live mode. | Art Director creates a structured Creative Spec; Maker requests a text-free visual; Typesetter assembles exact text and layout. Progress is visible in the Studio. | Make the production process legible rather than a spinner. |
 | 5:30–8:30 | Choose a variant and open the Poster Workbench. | The user can change text, font choice, color, image crop, scale, position, and layer order. | Establish authorship and practical usefulness. |
@@ -169,25 +169,40 @@ The Workbench must support:
 
 ## 8. World and style model
 
-v0 ships one first-party base Studio kit and two visually distinct Style
-Profiles. Using one spatial shell controls asset cost while still testing the
-central promise that style changes both world and output.
+The accepted first-party art direction and customization boundary live in the
+[`Wisp Visual Constitution`](2026-08-29-wisp-visual-constitution.md).
 
-Suggested profiles:
+v0 ships one first-party base Studio kit and two visually distinct Style
+Profiles. Warm Atelier is the reference World Kit: a mature, stylized 3D
+open-cutaway Studio on a floating Universe fragment, viewed through a
+controlled weak-perspective three-quarter camera. Using one spatial shell
+controls asset cost while still testing the central promise that style changes
+both world and output.
+
+Confirmed profiles:
 
 - **Warm Atelier** — wood, paper, warm light, restrained editorial typography;
 - **Neon Pixel Lab** — dark surfaces, neon accents, nearest-neighbor sprite
   treatment, compact display typography.
 
+Neon Pixel Lab is a Style Profile inside the bundled Warm Atelier shell for
+v0. It is not evidence of a complete second Pixel World Kit, a side-scrolling
+world, or an interchangeable renderer.
+
 Each profile supplies bounded structured context:
 
 - palette tokens;
 - typography choices from bundled, licensed fonts;
-- lighting and camera preset;
-- texture sampling and optional virtual resolution;
+- bounded light color/intensity within the World Kit's lighting preset;
+- style-local surface treatment for profile-owned accents;
 - composition tags and layout rules;
 - tone tags and prohibited treatments;
 - references to first-party assets.
+
+The World Kit, not a Style Profile, owns the scene-wide render profile,
+projection, virtual resolution, and camera/lighting presets. Bundled profile
+values are internal cosmetic projections for v0; they do not extend the public
+World Kit protocol.
 
 Natural-language style notes are data, never system instructions. They are
 length-limited, delimited, and passed to models as untrusted creative context.
@@ -449,6 +464,8 @@ Accepted:
 - one Studio per User; Studio is the private Universe;
 - real Projects, no fictional work economy;
 - Studio world plus media-specific Workbench;
+- mature stylized 3D floating-cutaway reference world, controlled
+  weak-perspective camera, and Wisp form grammar;
 - Babylon.js, WebGL2-first, GLB runtime, declarative World Kits;
 - noncommercial source-available licensing;
 - v0 Poster wedge and six-week validation scope.

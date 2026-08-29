@@ -146,16 +146,18 @@ resource budgets remain subject to host policy.
 ## 5. Scene
 
 `scene.json` stores product semantics and simple transforms rather than a copy
-of a Babylon.js scene graph.
+of a Babylon.js scene graph. The generic example's camera values mirror the
+Warm Atelier reference baseline: a controlled weak-perspective home view rather
+than an orthographic pixel presentation.
 
 ```json
 {
   "schemaVersion": "0.1",
   "renderProfile": {
-    "projection": "orthographic",
+    "projection": "perspective",
     "textureSampling": "linear",
     "virtualResolution": null,
-    "cameraPreset": "isometric-medium",
+    "cameraPreset": "weak-perspective-three-quarter",
     "lightingPreset": "warm-indoor"
   },
   "nodes": [

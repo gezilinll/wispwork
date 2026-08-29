@@ -11,7 +11,10 @@
 
 **Tech Stack:** Node 24.20.0, pnpm 11.24.0, TypeScript 7.0.2, React 19.2.8, Vite 8.2.2, Babylon.js 9.23.0, Canvas 2D, Zod 4.5.2, Vitest 4.1.11, and Playwright 1.62.1.
 
-**Spec:** [`docs/superpowers/specs/2026-08-29-style-echo-slice.md`](../specs/2026-08-29-style-echo-slice.md)
+**Specs:**
+[`docs/superpowers/specs/2026-08-29-style-echo-slice.md`](../specs/2026-08-29-style-echo-slice.md)
+and
+[`docs/superpowers/specs/2026-08-29-wisp-visual-constitution.md`](../specs/2026-08-29-wisp-visual-constitution.md)
 
 **Acceptance:** This plan becomes implementation authority only when the maintainer merges its pull request.
 
@@ -24,6 +27,33 @@
 - Run local pnpm commands through `fnm exec --using=24.20.0`; default-shell Node 23.3.0 cannot run pnpm 11.24.0. CI uses its pinned runtime action.
 - Support current macOS Chrome; CI uses Playwright Chromium and 390 x 844 as a viewing-compatibility viewport. Safari and Android real-device automation are deferred.
 - `Warm Atelier` is the initial preview and `Neon Pixel Lab` the only alternative. No neutral state, wizard, login, Backend, provider, credential, remote asset, or cross-origin request.
+- Warm Atelier is the reference World Kit. Its first frame uses a controlled
+  weak-perspective three-quarter home view, an open-cutaway Studio on one
+  visible floating fragment, and a human-reviewed tangible/anomaly hierarchy;
+  the composition principle is not a pixel or triangle quota.
+- Aim for a mid-detail handcrafted result through clear silhouettes, restrained
+  PBR, textures/decals, and low prop density. Stock CC0 furniture is non-focal
+  input: keep the vendored files byte-for-byte while runtime material, scale,
+  lighting, and composition integrate them. Their untouched promotional look
+  or a toy-like room does not pass visual review. Do not add assets merely to
+  imitate the concept exploration's density.
+- Users do not control an avatar or a free camera. Keep zoom/orbit bounded and
+  preserve a stable home composition; reduced motion removes camera
+  transitions without removing meaning.
+- The bundled World Kit owns projection, camera/lighting presets, geometry, and
+  semantic layout. A Style Profile overlays only allowlisted cosmetic values:
+  DOM tokens, material tint, bounded light color/intensity, sampling, Wisp
+  treatment, and Poster composition. Sampling changes stay inside profile-owned
+  accents rather than replacing the scene-wide render profile. Apply Kit
+  baseline first; an unsupported profile value fails closed or falls back to
+  it.
+- For this slice, record first useful DOM frame and first interactive Studio
+  frame separately, then target a steady 60 FPS home view on the demo laptop.
+  A Poster display-texture replacement must introduce no main-thread task over
+  100 ms, and the 20-cycle resource gate remains blocking. Android 30 FPS and
+  pointer-to-highlight latency are not evaluated because Android automation and
+  a picking/highlight consumer are outside this slice; do not report them as
+  passed.
 - Limits are 24 characters for Studio name, 36 for exact headline, and 72 for optional supporting line. Test maximum Chinese/Latin values in both compositions without truncation or rewriting.
 - Poster preview, display texture, and export use the same 1080 x 1350 renderer. Persist inputs, profile/asset versions, and revision; regenerate pixels instead of storing PNG blobs.
 - User exports may be commercial. Poster-bound material is first-party with an explicit output grant, CC0, or OFL; raw CC BY and final-product-only assets are excluded.
@@ -78,8 +108,8 @@ export type StyleProfile = Readonly<{
 type DomStyleProjection = Readonly<{ page: string; panel: string; ink: string;
   accent: string; fontFamily: string }>;
 type StudioStyleProjection = Readonly<{
-  clear: string; keyLight: string; materialTint: string; fov: number;
-  renderProfile: "soft-pbr" | "pixel-mixed";
+  clear: string; keyLight: string; materialTint: string;
+  surfaceTreatment: "soft-pbr" | "pixel-mixed";
 }>;
 type WispStyleProjection = Readonly<{ body: string; glow: string;
   treatment: "orb-ring" | "voxel" }>;
@@ -112,7 +142,11 @@ export class StudioRuntime {
   dispose(): Promise<void>;
 }
 
-type StudioKitProjection = Readonly<{ id: string }>;
+type StudioKitProjection = Readonly<{
+  id: "opening-studio-v1";
+  camera: Readonly<{ projection: "perspective";
+    preset: "weak-perspective-three-quarter"; fov: 0.58 }>;
+}>;
 type StudioDisplayAsset = Readonly<{ id: string; blob: Blob }>;
 type StudioProjection = Readonly<{
   style: StudioStyleProjection; wisp: WispStyleProjection;
@@ -135,16 +169,22 @@ Production omits `testEngine` and passes its canvas; tests inject concrete `Null
 
 The two records pin these projection values:
 
-| Profile | DOM page/panel/ink/accent | Studio clear/key/tint/FOV/profile | Wisp body/glow/treatment | Poster |
+| Profile | DOM page/panel/ink/accent | Studio clear/key/tint/treatment | Wisp body/glow/treatment | Poster |
 | --- | --- | --- | --- | --- |
-| Warm Atelier | `#f2e7d5` / `#fffaf1` / `#2b2118` / `#c56d42` | `#201a16` / `#ffd3a0` / `#a96f42` / `0.68` / `soft-pbr` | `#f7d49a` / `#dc8c52` / `orb-ring` | `warm-editorial` |
-| Neon Pixel Lab | `#090b17` / `#11162a` / `#eef2ff` / `#3df2ff` | `#050715` / `#7b61ff` / `#171b3d` / `0.58` / `pixel-mixed` | `#3df2ff` / `#ff4fd8` / `voxel` | `neon-grid` |
+| Warm Atelier | `#f2e7d5` / `#fffaf1` / `#2b2118` / `#c56d42` | `#201a16` / `#ffd3a0` / `#a96f42` / `soft-pbr` | `#f7d49a` / `#dc8c52` / `orb-ring` | `warm-editorial` |
+| Neon Pixel Lab | `#090b17` / `#11162a` / `#eef2ff` / `#3df2ff` | `#050715` / `#7b61ff` / `#171b3d` / `pixel-mixed` | `#3df2ff` / `#ff4fd8` / `voxel` | `neon-grid` |
+
+The `opening-studio-v1` Kit pins `perspective` /
+`weak-perspective-three-quarter` / FOV `0.58`; switching either profile leaves
+that camera and the Studio shell unchanged.
 
 ## Task 1: Opening Studio
 
 **Branch / PR:** `feat/style-echo-opening-studio` / `feat: open the Warm Atelier Studio`
 
-**Visible outcome:** A fresh checkout opens a restrained Warm Atelier Babylon scene; failed WebGL2 leaves an interactive DOM shell with a clear fault.
+**Visible outcome:** A fresh checkout opens a restrained Warm Atelier Babylon
+scene that reads as a creative Studio on a floating private-Universe fragment;
+failed WebGL2 leaves an interactive DOM shell with a clear fault.
 
 **Files:** Create `index.html`, `tsconfig.json`, `vite.config.ts`,
 `playwright.config.ts`, `src/main.tsx`, `src/app/WispApp.tsx`,
@@ -167,19 +207,37 @@ The two records pin these projection values:
 
 - [ ] **Step 2: Build the DOM-first shell and Warm scene.** Render React before
   awaiting Babylon. `StudioRuntime.mount()` creates one WebGL2 engine, an
-  isometric camera, floor/walls, desk/display geometry, warm PBR materials,
-  three bounded lights, and one render loop. Reject and dispose an engine whose
-  reported WebGL version is below 2. The runtime owns and disposes all engine
-  objects; Babylon objects never enter React state.
+  ArcRotate perspective camera with restrained convergence, stable target, and
+  bounded zoom/orbit; an open-cutaway shell and floating fragment; one central
+  work surface, one Brief/idea surface, one display area, and sparse
+  archive/tool geometry; warm PBR materials; one visibly dormant,
+  non-interactive portal/anomaly accent; three bounded lights; and one render
+  loop. Do not add an avatar, free navigation, random ambient behavior,
+  decorative density, or a false visit affordance. Reject and dispose an
+  engine whose reported WebGL version is below 2. The runtime owns and disposes
+  all engine objects; Babylon objects never enter React state.
 - [ ] **Step 3: Prove the concrete lifecycle red-green.** Construct
   `new StudioRuntime({onFault, testEngine: new NullEngine()})`, mount
-  `opening-studio-v1` with a null canvas, project Warm values, then dispose. Run
+  `opening-studio-v1` with a null canvas, project Warm values, then inspect the
+  injected engine's scene: its active camera is an `ArcRotateCamera` in
+  perspective mode with FOV `0.58`, finite zoom/orbit bounds, panning disabled,
+  and the home target unchanged after exercising the enabled orbit/zoom inputs.
+  Dispose and run
   `fnm exec --using=24.20.0 pnpm test:unit`; first expect a nonzero count from
-  the deliberate missing disposal, then expect exit 0 and every owned count 0.
+  the deliberate missing disposal, then expect exit 0, the camera assertions,
+  and every owned count 0.
 - [ ] **Step 4: Add the WebGL fault path.** In Playwright, override only
   `canvas.getContext("webgl2" | "webgl")` to return `null`; assert the DOM
   heading and `role="status"` remain visible and describe unavailable 3D.
-- [ ] **Step 5: Extend GitHub `quality`.** Install pinned Chromium before the
+- [ ] **Step 5: Gate the actual first frame and extend GitHub `quality`.** Capture
+  the desktop and 390 x 844 first frame for the PR. The delivery agent records a
+  pass/fail against Constitution items 1–4: creative Studio plus floating
+  Universe, work surfaces before anomaly, mature handcrafted composition, and
+  complete-fragment weak perspective; the maintainer uses the same evidence
+  before merge. Record separate `performance.mark` entries for first useful DOM
+  and first interactive Studio, plus a 10-second home-view FPS sample on the
+  demo laptop; a failed visual criterion or unrecorded measurement blocks this
+  task. Install pinned Chromium before the
   terminating `pnpm check`; retain the read-only token and existing timeout.
   Run `fnm exec --using=24.20.0 pnpm install --frozen-lockfile`, then
   `fnm exec --using=24.20.0 pnpm check` and `git diff --check`; expect all exit
@@ -267,7 +325,7 @@ The two records pin these projection values:
 bundled `LICENSE.txt` and `scripts/verify-assets.mjs`.
 
 - [ ] **Step 1: Make four-projection tests red.** For each profile ID, assert
-  exact DOM CSS variables, Studio light/material/camera values, Wisp appearance,
+  exact DOM CSS variables, Studio light/material treatment, Wisp appearance,
   and Poster composition ID from `STYLE_PROFILES[id]`. Assert no consumer owns
   a second profile switch.
 - [ ] **Step 2: Add the second complete record and controls.** Use two semantic
@@ -283,8 +341,11 @@ bundled `LICENSE.txt` and `scripts/verify-assets.mjs`.
   `pnpm typecheck` in the terminating `check`. Add the GLB loader only now and
   keep loader objects inside the owning Babylon module.
 - [ ] **Step 4: Add one procedural Typesetter Wisp.** Keep it a bounded Studio
-  node: warm orb/ring versus neon voxel treatment, restrained preview cue, DOM
-  status equivalent, and no chat, behavior tree, Agent Loop, or plugin API.
+  node. Both warm orb/ring and neon voxel treatments retain a visible core,
+  outer form, bounded trail, and Typesetter role signifier; state changes use
+  motion/deformation/luminance plus equivalent DOM status and do not depend on
+  a cartoon face. Add no chat, custom skeleton, behavior tree, Agent Loop, or
+  plugin API.
 - [ ] **Step 5: Exercise twenty profile lifecycles.** Each iteration constructs
   a runtime with a new `NullEngine`, mounts, projects the alternating profile,
   disposes, and asserts every owned count is zero before the next iteration.
@@ -348,8 +409,9 @@ bundled `LICENSE.txt` and `scripts/verify-assets.mjs`.
   src/studio/StudioRuntime.test.ts`, then `fnm exec --using=24.20.0 pnpm exec
   playwright test tests/e2e/opening-studio.spec.ts`, and
   `fnm exec --using=24.20.0 pnpm check`. Expect all exit 0, IHDR 1080 x 1350,
-  failure atomicity, accepted-only hashes, and 20 zero-count lifecycles; then
-  review, open the PR, and stop.
+  failure atomicity, accepted-only hashes, and 20 zero-count lifecycles. In real
+  Chrome, record a Poster display-texture replacement with the Long Tasks API;
+  any task over 100 ms fails this gate. Then review, open the PR, and stop.
 
 ## Task 5: Return, revise, and quality gate
 
@@ -386,7 +448,13 @@ bundled `LICENSE.txt` and `scripts/verify-assets.mjs`.
   `git diff --check`; expect all exit 0 and requirements 1–10 mapped to passing
   evidence. In real Chrome inspect both profiles at desktop/390 x 844 and do 20
   switches/adoptions; record any failed subjective criterion as failure.
-- [ ] **Step 6: Perform the final two-axis review.** The Spec axis maps all ten
+- [ ] **Step 6: Close the slice performance record.** Re-record separate first
+  useful DOM and first interactive Studio marks, the 10-second home-view FPS
+  sample, one Poster display-texture replacement, and the 20-cycle owned-resource
+  result. Require the demo-laptop 60 FPS target, no replacement long task over
+  100 ms, and zero tracked growth. Mark Android FPS and pointer-highlight
+  latency `not evaluated` with their exclusion reasons rather than passing them.
+- [ ] **Step 7: Perform the final two-axis review.** The Spec axis maps all ten
   deterministic requirements and explicit exclusions; Standards checks the
   review-size guard, dependency/asset evidence, and absence of speculative
   abstractions. Open the PR and stop for maintainer sign-off.
@@ -395,4 +463,7 @@ bundled `LICENSE.txt` and `scripts/verify-assets.mjs`.
 
 After each merge, fetch `origin/main`, verify it, and adjust only the next task when actual files, rendering, or tests invalidate this plan. Changes to behavior, output licensing, repository ownership, atomic adoption, or five review boundaries need maintainer confirmation; patch pins and internal placement remain engineering decisions.
 
-Completion requires Task 5 deterministic checks, real Chrome/mobile-viewport demonstration, and maintainer plus delivery-agent subjective review. It authorizes neither market claims nor Brief, Workbench, AIGC, Backend, account, sharing, or World Kit import work.
+Completion requires Task 5 deterministic checks, real Chrome/mobile-viewport
+demonstration, and maintainer plus delivery-agent subjective review against the
+Visual Constitution. It authorizes neither market claims nor Brief, Workbench,
+AIGC, Backend, account, sharing, second World Kit, or World Kit import work.
