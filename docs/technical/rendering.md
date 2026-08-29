@@ -61,19 +61,31 @@ become the Studio renderer. The Studio does not become a general design canvas.
 class contract, not a renderer-neutral TypeScript interface:
 
 ```ts
+type StudioKitProjection = Readonly<{ id: string }>;
+type StudioDisplayAsset = Readonly<{ id: string; blob: Blob }>;
+type StudioResourceCounts = Readonly<{ engines: number; scenes: number;
+  meshes: number; materials: number; textures: number; observers: number }>;
 type StudioRuntimeOptions = {
-  onHit(hit: StudioHit): void;
   onFault(fault: StudioFault): void;
+  testEngine?: AbstractEngine;
 };
 
 class StudioRuntime {
-  mount(canvas: HTMLCanvasElement, kit: NormalizedWorldKit): Promise<void>;
+  constructor(options: StudioRuntimeOptions);
+  mount(canvas: HTMLCanvasElement | null, kit: StudioKitProjection): Promise<void>;
   project(snapshot: StudioProjection): void;
-  setView(view: StudioView): void;
-  capture(options: CaptureOptions): Promise<Blob>;
+  replaceDisplayAsset(asset: StudioDisplayAsset | null): Promise<void>;
+  readOwnedResourceCounts(): StudioResourceCounts;
   dispose(): Promise<void>;
 }
 ```
+
+`StudioKitProjection` and `StudioProjection` are concrete serializable inputs;
+the transient `StudioDisplayAsset` contains a stable ID and Blob, never a
+persisted value or Poster DOM node. Production omits `testEngine`; tests inject
+Babylon `NullEngine` and pass a null canvas. `setView`, Studio capture, and hit
+callbacks are added only when a real navigation, capture, or picking consumer
+earns them; they are not speculative methods in the first slice.
 
 It owns:
 
@@ -81,7 +93,6 @@ It owns:
   input observers, render loop, and disposal;
 - mapping stable product IDs to Babylon nodes;
 - deterministic projection of a `StudioProjection` into the current scene;
-- hit testing and conversion to product-level `StudioHit` values;
 - resource reference counting inside one mounted world;
 - device capability/fault reporting.
 
@@ -104,22 +115,17 @@ Persisted product state contains stable IDs and values only:
 
 ```ts
 type StudioProjection = {
-  styleProfileId: string;
-  wispStates: Array<{
-    wispId: string;
-    anchorId: string;
-    activity: "idle" | "thinking" | "making" | "reviewing" | "failed";
-  }>;
-  displays: Array<{
-    slotId: string;
-    assetId: string;
-  }>;
+  style: StudioStyleProjection;
+  wisp: WispStyleProjection;
+  wispCue: "idle" | "previewing" | "displaying";
+  acceptedRevision: number | null;
+  displayAssetId: string | null;
 };
 ```
 
-Projection is one-way and idempotent. A Babylon pointer hit becomes a specific
-product callback; it never mutates the Workspace silently. Hover, selection
-highlight, current camera interpolation, and runtime handles remain ephemeral.
+Projection is one-way and idempotent. Any later pointer-hit consumer must use a
+specific product callback and never mutate the Workspace silently. Hover,
+selection highlight, camera interpolation, and runtime handles are ephemeral.
 
 ## Assets
 
@@ -182,7 +188,8 @@ behavior or grant executable capabilities.
 
 Mount:
 
-1. receive an already validated `NormalizedWorldKit`;
+1. receive a trusted bundled `StudioKitProjection`; an untrusted World Kit must
+   first pass the separate future importer;
 2. create the engine and compatibility-path scene;
 3. load each asset into an isolated container;
 4. create semantic node/slot/anchor indexes;
@@ -198,8 +205,9 @@ Dispose:
    engine in ownership order;
 5. clear ID maps and report any tracked resource still referenced.
 
-The repeat-mount test runs this sequence 20 times and checks that tracked
-resources and browser memory do not grow monotonically.
+The repeat-mount test runs the complete lifecycle 20 times and requires every
+tracked owned-resource count to return to zero after each cycle. Real WebGL gets
+a smoke test; deterministic CI does not assert browser GC or memory counters.
 
 ## Compatibility and fallback
 
