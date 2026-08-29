@@ -8,6 +8,9 @@ implementation not started
 **Parent specification:**
 [`2026-08-28-wisp-v0-design.md`](2026-08-28-wisp-v0-design.md)
 
+**Visual specification:**
+[`2026-08-29-wisp-visual-constitution.md`](2026-08-29-wisp-visual-constitution.md)
+
 **Delivery gate:** This specification authorizes a focused implementation plan,
 not application code or an empty scaffold.
 
@@ -58,6 +61,12 @@ Warm Atelier is the initial preview so the first frame already contains a
 coherent world. No third neutral Style Profile or unstyled scene is created.
 The user has not adopted anything merely because this preview is visible.
 
+The first frame follows the Visual Constitution: a restrained open-cutaway
+Studio on a visible floating Universe fragment, a controlled weak-perspective
+three-quarter home view, a legible central creative surface and display area,
+and meaningful anomaly accents. The approximately 65/35 tangible/anomaly
+balance is a human composition principle, not an automated coverage quota.
+
 A DOM panel exposes three structured fields:
 
 - Studio name;
@@ -82,10 +91,16 @@ The user can switch repeatedly between two Style Profiles:
 Both profiles use the same bounded Studio shell. A switch must visibly project
 the same selected profile into:
 
-1. Studio materials, lighting, camera treatment, and declared render profile;
+1. Studio material tint, bounded light color/intensity, and style-local surface
+   treatment while the World Kit camera and scene-wide render profile remain
+   stable;
 2. DOM palette and typography accents;
 3. the Typesetter Wisp's appearance and restrained reaction;
 4. the deterministic Poster composition and preview.
+
+Warm Atelier is the bundled reference World Kit. Neon Pixel Lab is a second
+Style Profile inside that same shell; this slice does not claim to implement a
+second Pixel World Kit, side-scrolling world, renderer, or import path.
 
 The relationship must be inspectable product state, not four independently
 hard-coded theme switches. Text changes update the Poster preview without
@@ -149,6 +164,11 @@ presence without pretending that the complete Creative Loop exists.
 The Wisp:
 
 - changes its bounded first-party appearance with the selected Style Profile;
+- preserves one bounded form grammar across both treatments: visible core,
+  outer form, trail, role meaning, and state feedback;
+- communicates primarily through motion, deformation, luminance, accessible
+  status, and a restrained role signifier rather than depending on a cartoon
+  face;
 - gives a restrained deterministic response while the preview recomposes;
 - performs the short display action after a successful adoption;
 - exposes outcome and failure state through accessible DOM text as well as
@@ -241,6 +261,11 @@ The slice is complete only when:
   baseline and inspected at the mobile viewing compatibility size;
 - Warm Atelier and Neon Pixel Lab are clearly distinct while remaining
   coherent across Studio, UI, Wisp, and Poster;
+- the Studio reads as a mature handcrafted creative space on a private
+  floating Universe fragment, not a toy room, generic fantasy island, or
+  high-density showcase scene;
+- the weak-perspective home view preserves the complete-fragment composition
+  and work-surface readability without free camera navigation;
 - the maintainer and delivery agent both judge the actual interaction to have a
   clear style relationship, credible restrained visuals, and a basic sense of
   ownership and completion;
