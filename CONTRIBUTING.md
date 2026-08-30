@@ -1,6 +1,6 @@
 # Contributing to Wisp
 
-Wisp is at the pre-implementation handoff stage. Design feedback, reproducible
+Wisp is in early prototype implementation. Design feedback, reproducible
 research, protocol fixtures, and focused issue reports are welcome through
 [GitHub Issues](https://github.com/gezilinll/wispwork/issues).
 
@@ -47,8 +47,12 @@ then run:
 
 ```bash
 pnpm install --frozen-lockfile
+pnpm exec playwright install chromium
 pnpm check
 ```
+
+The Chromium installation is required once per local Playwright environment;
+the CI quality workflow installs the same browser before the terminating check.
 
 The first approved feature slice adds only the application commands it needs in
 its own reviewed MR.

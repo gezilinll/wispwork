@@ -51,6 +51,14 @@ The portal is dormant and non-interactive in v0. It establishes the world
 boundary without advertising visits, sharing, or community behavior that the
 current product does not implement.
 
+The maintainer-selected Opening Studio concept reference is
+[`opening-studio-north-star-v1`](../../design/opening-studio-north-star-v1.md).
+It uses mature architecture and materials as the base, with only restrained
+spatial-seam, orbital, and connective-glow accents. The image is a
+concept-only north star, not a runtime asset or pixel-perfect acceptance
+screenshot; the browser scene follows this Constitution and its measured
+budgets when the concept contains more detail than the implementation earns.
+
 ## 3. Visual hierarchy
 
 The reference direction is approximately **65% tangible Studio and 35%

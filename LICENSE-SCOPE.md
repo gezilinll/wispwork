@@ -32,6 +32,30 @@ presence does not relicense it under PolyForm, and the root license does not
 override a more specific third-party notice. Record vendored material and its
 notices beside the material before committing it.
 
+### Opening Studio asset exceptions
+
+The following file is licensed under GPL-3.0-or-later instead of the repository
+default. Its complete license text is stored at
+[`LICENSES/GPL-3.0-or-later.txt`](LICENSES/GPL-3.0-or-later.txt):
+
+- `scripts/export-opening-studio-assets.py`
+
+That helper contains collection selection and deterministic glTF export
+settings only. Its GPL license does not change the license of Blender data or
+exported artwork.
+
+The first-party authored content in
+`assets/opening-studio/opening-studio.blend` and the two GLBs under
+`public/assets/opening-studio/first-party/` uses the repository's default
+PolyForm Noncommercial license. The current first-party GLBs embed no Poly
+Haven images; Poly Haven data applied to them at runtime remains CC0 and is not
+relicensed or restricted by PolyForm.
+
+Files under `public/assets/opening-studio/poly-haven/` retain Poly Haven's
+CC0-1.0 dedication. The legal code is stored beside them at
+`public/assets/opening-studio/CC0-1.0.txt`; exact provenance and file hashes are
+recorded in `public/assets/ASSETS.md`.
+
 ## User content
 
 Using Wisp does not transfer ownership of a user's briefs, project files,

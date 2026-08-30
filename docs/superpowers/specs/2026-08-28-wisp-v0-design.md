@@ -233,8 +233,9 @@ v0 allows changing slot content, not arbitrary world construction.
 - PNG export;
 - local product-event capture for validation metrics;
 - versioned, strict, data-only World Kit v0 protocol;
-- responsive desktop browser experience, with mobile viewing as a technical
-  compatibility check rather than an authoring promise.
+- desktop browser experience at a minimum 1280 × 720 viewport with a fine
+  primary pointer; smaller or coarse-pointer devices receive a localized
+  unsupported-device notice without initializing the 3D renderer.
 
 ### Explicitly excluded
 
@@ -416,8 +417,9 @@ time spent watching Wisps, and willingness to customize the room are secondary.
 - unsupported or malicious World Kits fail closed with useful diagnostics;
 - switching/reloading the reference world 20 times does not show continuing
   GPU/resource growth;
-- the reference scene works in current Chrome, Safari, and one Android
-  mid-range device using the WebGL2 path;
+- the reference scene works in current macOS Chrome at the supported desktop
+  boundary; Safari and mobile-device support require a separately accepted
+  compatibility slice;
 - a vendor outage still permits the full fixture path with clearly labelled
   fixtures;
 - no user content or model key appears in client bundles or default logs;
