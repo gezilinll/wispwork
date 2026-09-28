@@ -14,6 +14,6 @@
     "check": "pnpm docs:check && pnpm whitespace:check"
   },
   "devDependencies": {
-    "markdownlint-cli2": "0.23.2"
+    "markdownlint-cli2": "0.23.3"
   }
 }
